@@ -70,7 +70,7 @@
    #:set-decoder-simple-clos-semantics
    #:with-decoder-simple-clos-semantics
    ;; encoder.lisp
-   #:*json-output*
+   #:*json-output* #:*json-output-unicode-p*
    #:unencodable-value-error
    #:substitute-printed-representation
    #:with-substitute-printed-representation-restart

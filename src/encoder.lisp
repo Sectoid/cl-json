@@ -8,6 +8,9 @@
 (defvar *json-output* (make-synonym-stream '*standard-output*)
   "The default output stream for encoding operations.")
 
+(defvar *json-output-unicode-p* nil
+  "Treat the default output stream as a unicode stream")
+
 (define-condition unencodable-value-error (type-error)
   ((context :accessor unencodable-value-error-context :initarg :context))
   (:documentation
@@ -383,7 +386,9 @@ characters in string S to STREAM."
        do (write-char #\\ stream) (write-char special stream)
      else if (< #x1f code #x7f)
        do (write-char ch stream)
-     else
+     else if *json-output-unicode-p*
+       do (write-char ch stream)
+     else 
        do (let ((special '#.(rassoc-if #'consp +json-lisp-escaped-chars+)))
             (destructuring-bind (esc . (width . radix)) special
               (format stream "\\~C~V,V,'0R" esc radix width code)))))
